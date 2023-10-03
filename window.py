@@ -13,7 +13,6 @@ class Window(QtWebEngineWidgets.QWebEngineView):
         self.settings().setAttribute(
             QtWebEngineWidgets.QWebEngineSettings.PdfViewerEnabled, True)
         self.current_pdf_path = None  # Store the path of the currently displayed PDF
-        self.edited_pdf_path = None  # Store the path of the edited PDF
 
     def loadPDF(self, pdf_path):
         formatted_path = "file:///" + pdf_path.replace(" ", "%20")
@@ -32,8 +31,8 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             pdf_to_merge, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select PDF to Merge", "", "PDF Files (*.pdf);;All Files (*)", options=options)
 
             if pdf_to_merge:
-                self.edited_pdf_path = pdf_combiner([self.current_pdf_path, pdf_to_merge])
-                self.loadPDF(self.edited_pdf_path)
+                self.current_pdf_path = pdf_combiner([self.current_pdf_path, pdf_to_merge])
+                self.loadPDF(self.current_pdf_path)
 
     def rotatePDF(self):
         if self.current_pdf_path is not None:
@@ -42,8 +41,8 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                 pages_to_rotate = dialog.pages_to_rotate
                 rotation_degrees = dialog.rotation_degrees
                 if pages_to_rotate:
-                    self.edited_pdf_path = pdf_rotator(self.current_pdf_path, pages_to_rotate, rotation_degrees)
-                    self.loadPDF(self.edited_pdf_path)
+                    self.current_pdf_path = pdf_rotator(self.current_pdf_path, pages_to_rotate, rotation_degrees)
+                    self.loadPDF(self.current_pdf_path)
 
     def deletePages(self):
         if self.current_pdf_path is not None:
@@ -51,8 +50,8 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             if dialog.exec_() == QtWidgets.QDialog.Accepted:
                 pages_to_delete = dialog.pages_to_delete
                 if pages_to_delete:
-                    self.edited_pdf_path = pdf_deleter(self.current_pdf_path, pages_to_delete)
-                    self.loadPDF(self.edited_pdf_path)
+                    self.current_pdf_path = pdf_deleter(self.current_pdf_path, pages_to_delete)
+                    self.loadPDF(self.current_pdf_path)
 
     def rearrangePages(self):
         if self.current_pdf_path is not None:
@@ -60,11 +59,11 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             if dialog.exec_() == QtWidgets.QDialog.Accepted:
                 new_order_pages = dialog.new_order_pages
                 if new_order_pages:
-                    self.edited_pdf_path = pdf_rearranger(self.current_pdf_path, new_order_pages)
-                    self.loadPDF(self.edited_pdf_path)
+                    self.current_pdf_path = pdf_rearranger(self.current_pdf_path, new_order_pages)
+                    self.loadPDF(self.current_pdf_path)
 
     def saveAsPDF(self):
-        if self.edited_pdf_path is not None:
+        if self.current_pdf_path is not None:
             options = QtWidgets.QFileDialog.Options()
             new_name, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save As PDF", "", "PDF Files (*.pdf);;All Files (*)", options=options)
             if new_name:
@@ -73,8 +72,8 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                 # Load a blank page to release the hold on the current PDF
                 self.load(QtCore.QUrl('about:blank'))
 
-                saved_path = rename_and_move_pdf(self.edited_pdf_path, new_name, new_location)
+                saved_path = rename_and_move_pdf(self.current_pdf_path, new_name, new_location)
                 if saved_path:
-                    delete_pdf(self.edited_pdf_path)  # Delete the edited PDF
-                    self.edited_pdf_path = None  # Reset the edited PDF path
+                    delete_pdf(self.current_pdf_path)  # Delete the edited PDF
+                    self.current_pdf_path = None  # Reset the edited PDF path
                     self.loadPDF(saved_path.replace('\\', '/')) # To keep editing
