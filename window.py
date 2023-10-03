@@ -89,5 +89,5 @@ class Window(QtWebEngineWidgets.QWebEngineView):
     def on_close(self, event):
         if self.current_pdf_path:
             self.load(QtCore.QUrl("about:blank"))  # Load a blank page
-        delete_pdf(self.current_pdf_path)
+        delete_pdf((os.getcwd() + "/.editing.pdf").replace("\\", "/"))
         event.accept()
