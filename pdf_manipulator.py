@@ -4,6 +4,11 @@ import os
 def deleteFileExtension(fileName):
     return fileName[:-4] if len(fileName) > 4 and fileName[-4:] == '.pdf' else fileName
 
+# Function to get the number of pages in a PDF file
+def get_num_pages(pdf):
+    reader = PyPDF2.PdfReader(pdf)
+    return len(reader.pages)
+
 # Function to merge PDFs and save as "editing.pdf"
 def pdf_combiner(pdf_list):
     merged_pdf_path = 'editing.pdf'
@@ -14,13 +19,15 @@ def pdf_combiner(pdf_list):
     return merged_pdf_path  # Return the path of the merged PDF
 
 # Function to rotate PDFs and save as "editing.pdf"
-def pdf_rotator(pdf, rotation):
+def pdf_rotator(pdf, pages_to_rotate, rotation_degrees):
     edited_pdf_path = 'editing.pdf'
     reader = PyPDF2.PdfReader(pdf)
     writer = PyPDF2.PdfWriter()
     for i in range(len(reader.pages)):
-        writer.add_page(reader.pages[i])
-        writer.pages[i].rotate(rotation)
+        if i + 1 in pages_to_rotate:
+            writer.add_page(reader.pages[i].rotate(rotation_degrees))
+        else:
+            writer.add_page(reader.pages[i])
     with open(edited_pdf_path, 'wb') as new_file:
         writer.write(new_file)
     return edited_pdf_path  # Return the path of the edited PDF

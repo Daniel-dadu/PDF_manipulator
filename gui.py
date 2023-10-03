@@ -2,6 +2,7 @@ import sys
 import os
 from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets
 from pdf_manipulator import pdf_combiner, pdf_rotator, pdf_deleter, pdf_rearranger, rename_and_move_pdf, delete_pdf
+from page_rotation_dialog import PageRotationDialog
 
 class Window(QtWebEngineWidgets.QWebEngineView):
     def __init__(self):
@@ -23,10 +24,15 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             self.edited_pdf_path = pdf_combiner([self.current_pdf_path, pdf_to_merge])
             self.loadPDF(self.edited_pdf_path)
 
-    def rotatePDF(self, rotation):
+    def rotatePDF(self):
         if self.current_pdf_path is not None:
-            self.edited_pdf_path = pdf_rotator(self.current_pdf_path, rotation)
-            self.loadPDF(self.edited_pdf_path)
+            dialog = PageRotationDialog(self.current_pdf_path)
+            if dialog.exec_() == QtWidgets.QDialog.Accepted:
+                pages_to_rotate = dialog.pages_to_rotate
+                rotation_degrees = dialog.rotation_degrees
+                if pages_to_rotate:
+                    self.edited_pdf_path = pdf_rotator(self.current_pdf_path, pages_to_rotate, rotation_degrees)
+                    self.loadPDF(self.edited_pdf_path)
 
     def deletePages(self, pages_to_delete):
         if self.current_pdf_path is not None:
@@ -94,8 +100,7 @@ class PDFPreviewerApp(QtWidgets.QMainWindow):
             self.web_view.mergePDF(pdf_to_merge)
 
     def rotatePDF(self):
-        # Implement rotation logic here
-        pass
+        self.web_view.rotatePDF()
 
     def deletePages(self):
         # Implement page deletion logic here
