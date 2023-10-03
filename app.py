@@ -36,32 +36,9 @@ class PDFPreviewerApp(QtWidgets.QMainWindow):
         save_as_button.clicked.connect(self.saveAsPDF)
         save_as_button.setGeometry(590, 10, 100, 30)
 
-    def openPDF(self):
-        options = QtWidgets.QFileDialog.Options()
-        pdf_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open PDF File", "", "PDF Files (*.pdf);;All Files (*)", options=options)
-
-        if pdf_file:
-            self.web_view.loadPDF(pdf_file)
-
-    def mergePDF(self):
-        options = QtWidgets.QFileDialog.Options()
-        pdf_to_merge, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Select PDF to Merge", "", "PDF Files (*.pdf);;All Files (*)", options=options)
-
-        if pdf_to_merge:
-            self.web_view.mergePDF(pdf_to_merge)
-
-    def rotatePDF(self):
-        self.web_view.rotatePDF()
-
-    def deletePages(self):
-        self.web_view.deletePages()
-
-    def rearrangePages(self):
-        self.web_view.rearrangePages()
-
-    def saveAsPDF(self):
-        options = QtWidgets.QFileDialog.Options()
-        new_name, _ = QtWidgets.QFileDialog.getSaveFileName(self, "Save As PDF", "", "PDF Files (*.pdf);;All Files (*)", options=options)
-        if new_name:
-            new_location = os.path.dirname(new_name)
-            self.web_view.saveAsPDF(os.path.basename(new_name), new_location)
+    def openPDF(self): self.web_view.openPDF()
+    def mergePDF(self): self.web_view.mergePDF()
+    def rotatePDF(self): self.web_view.rotatePDF()
+    def deletePages(self): self.web_view.deletePages()
+    def rearrangePages(self): self.web_view.rearrangePages()
+    def saveAsPDF(self): self.web_view.saveAsPDF()
