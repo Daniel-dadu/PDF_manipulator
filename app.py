@@ -53,3 +53,5 @@ class PDFPreviewerApp(QtWidgets.QMainWindow):
         self.delete_button.setEnabled(pdf_path is not None)
         self.rearrange_button.setEnabled(pdf_path is not None)
         self.save_as_button.setEnabled(pdf_path is not None)
+
+    def closeEvent(self, event): self.web_view.on_close(event)

@@ -85,3 +85,9 @@ class Window(QtWebEngineWidgets.QWebEngineView):
     def updateButtonStates(self):
         pdf_path = self.current_pdf_path
         self.window().updateButtonStates(pdf_path)  # Call the parent's updateButtonStates method
+
+    def on_close(self, event):
+        if self.current_pdf_path:
+            self.load(QtCore.QUrl("about:blank"))  # Load a blank page
+        delete_pdf(self.current_pdf_path)
+        event.accept()
