@@ -57,8 +57,7 @@ class PDFPreviewerApp(QtWidgets.QMainWindow):
         self.web_view.deletePages()
 
     def rearrangePages(self):
-        # Implement page rearrangement logic here
-        pass
+        self.web_view.rearrangePages()
 
     def saveAsPDF(self):
         options = QtWidgets.QFileDialog.Options()

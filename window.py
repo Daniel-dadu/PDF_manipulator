@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtWebEngineWidgets
 from pdf_manipulator import pdf_combiner, pdf_rotator, pdf_deleter, pdf_rearranger, rename_and_move_pdf, delete_pdf
 from page_rotation_dialog import PageRotationDialog
 from pages_deletion_dialog import PagesDeletionDialog
+from pages_rearrange_dialog import PagesRearrangeDialog
 
 class Window(QtWebEngineWidgets.QWebEngineView):
     def __init__(self):
@@ -42,10 +43,14 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                     self.edited_pdf_path = pdf_deleter(self.current_pdf_path, pages_to_delete)
                     self.loadPDF(self.edited_pdf_path)
 
-    def rearrangePages(self, page_order):
+    def rearrangePages(self):
         if self.current_pdf_path is not None:
-            self.edited_pdf_path = pdf_rearranger(self.current_pdf_path, page_order)
-            self.loadPDF(self.edited_pdf_path)
+            dialog = PagesRearrangeDialog(self.current_pdf_path)
+            if dialog.exec_() == QtWidgets.QDialog.Accepted:
+                new_order_pages = dialog.new_order_pages
+                if new_order_pages:
+                    self.edited_pdf_path = pdf_rearranger(self.current_pdf_path, new_order_pages)
+                    self.loadPDF(self.edited_pdf_path)
 
     def saveAsPDF(self, new_name, new_location):
         if self.edited_pdf_path is not None:
