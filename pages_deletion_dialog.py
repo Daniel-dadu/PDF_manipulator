@@ -16,15 +16,23 @@ class PagesDeletionDialog(QtWidgets.QDialog):
         self.page_list_widget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
         self.page_list_widget.addItems([str(i + 1) for i in range(num_pages)])  # Display page numbers
 
-        delete_button = QtWidgets.QPushButton("Delete", self)
-        delete_button.clicked.connect(self.deletePages)
+        self.delete_button = QtWidgets.QPushButton("Delete", self)
+        self.delete_button.setEnabled(False)  # Initially disable the button
+        self.delete_button.clicked.connect(self.deletePages)
+
+        # Connect the button's state to the number of selected items
+        self.page_list_widget.itemSelectionChanged.connect(self.updateDeleteButtonState)
 
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(QtWidgets.QLabel("Select the pages to delete:"))
         layout.addWidget(self.page_list_widget)
-        layout.addWidget(delete_button)
+        layout.addWidget(self.delete_button)
 
         self.setLayout(layout)
+
+    def updateDeleteButtonState(self):
+        # Enable the "Delete" button if at least one page is selected, disable it otherwise
+        self.delete_button.setEnabled(len(self.page_list_widget.selectedItems()) > 0)
 
     def deletePages(self):
         for item in self.page_list_widget.selectedItems():
