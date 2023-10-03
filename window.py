@@ -14,10 +14,14 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             QtWebEngineWidgets.QWebEngineSettings.PdfViewerEnabled, True)
         self.current_pdf_path = None  # Store the path of the currently displayed PDF
 
+        # Connect the loadFinished signal to updateButtonStates
+        self.loadFinished.connect(self.updateButtonStates)
+
     def loadPDF(self, pdf_path):
         formatted_path = "file:///" + pdf_path.replace(" ", "%20")
         self.load(QtCore.QUrl.fromUserInput(formatted_path))
         self.current_pdf_path = pdf_path  # Update the current PDF path
+        self.updateButtonStates()  # Call the method when PDF is loaded
 
     def openPDF(self):
         options = QtWidgets.QFileDialog.Options()
@@ -77,3 +81,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                     delete_pdf(self.current_pdf_path)  # Delete the edited PDF
                     self.current_pdf_path = None  # Reset the edited PDF path
                     self.loadPDF(saved_path.replace('\\', '/')) # To keep editing
+
+    def updateButtonStates(self):
+        pdf_path = self.current_pdf_path
+        self.window().updateButtonStates(pdf_path)  # Call the parent's updateButtonStates method
