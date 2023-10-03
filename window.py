@@ -28,6 +28,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
         pdf_file, _ = QtWidgets.QFileDialog.getOpenFileName(self, "Open PDF File", "", "PDF Files (*.pdf);;All Files (*)", options=options)
         if pdf_file:
             self.loadPDF(pdf_file)
+            self.window().updateSaveAsState(False) # Disable Save as btn
 
     def mergePDF(self):
         if self.current_pdf_path is not None:
@@ -37,6 +38,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
             if pdf_to_merge:
                 self.current_pdf_path = pdf_combiner([self.current_pdf_path, pdf_to_merge])
                 self.loadPDF(self.current_pdf_path)
+                self.window().updateSaveAsState(True) # Enable Save as btn
 
     def rotatePDF(self):
         if self.current_pdf_path is not None:
@@ -47,6 +49,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                 if pages_to_rotate:
                     self.current_pdf_path = pdf_rotator(self.current_pdf_path, pages_to_rotate, rotation_degrees)
                     self.loadPDF(self.current_pdf_path)
+                    self.window().updateSaveAsState(True) # Enable Save as btn
 
     def deletePages(self):
         if self.current_pdf_path is not None:
@@ -56,6 +59,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                 if pages_to_delete:
                     self.current_pdf_path = pdf_deleter(self.current_pdf_path, pages_to_delete)
                     self.loadPDF(self.current_pdf_path)
+                    self.window().updateSaveAsState(True) # Enable Save as btn
 
     def rearrangePages(self):
         if self.current_pdf_path is not None:
@@ -65,6 +69,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                 if new_order_pages:
                     self.current_pdf_path = pdf_rearranger(self.current_pdf_path, new_order_pages)
                     self.loadPDF(self.current_pdf_path)
+                    self.window().updateSaveAsState(True) # Enable Save as btn
 
     def saveAsPDF(self):
         if self.current_pdf_path is not None:
@@ -81,6 +86,7 @@ class Window(QtWebEngineWidgets.QWebEngineView):
                     delete_pdf(self.current_pdf_path)  # Delete the edited PDF
                     self.current_pdf_path = None  # Reset the edited PDF path
                     self.loadPDF(saved_path.replace('\\', '/')) # To keep editing
+                    self.window().updateSaveAsState(False) # Disable Save as btn
 
     def updateButtonStates(self):
         pdf_path = self.current_pdf_path

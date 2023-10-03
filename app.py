@@ -85,10 +85,13 @@ class PDFPreviewerApp(QtWidgets.QMainWindow):
     def saveAsPDF(self): self.web_view.saveAsPDF()
 
     def updateButtonStates(self, pdf_path):
-        self.merge_button.setEnabled(pdf_path is not None)
-        self.rotate_button.setEnabled(pdf_path is not None)
-        self.delete_button.setEnabled(pdf_path is not None)
-        self.rearrange_button.setEnabled(pdf_path is not None)
-        self.save_as_button.setEnabled(pdf_path is not None)
+        if pdf_path is not None:
+            self.merge_button.setEnabled(True)
+            self.rotate_button.setEnabled(True)
+            self.delete_button.setEnabled(True)
+            self.rearrange_button.setEnabled(True)
+    
+    def updateSaveAsState(self, state):
+        self.save_as_button.setEnabled(state)
 
     def closeEvent(self, event): self.web_view.on_close(event)
