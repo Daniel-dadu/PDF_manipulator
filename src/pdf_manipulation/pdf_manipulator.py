@@ -3,9 +3,6 @@ import os
 
 edited_pdf_path = '.editing.pdf'
 
-def deleteFileExtension(fileName):
-    return fileName[:-4] if len(fileName) > 4 and fileName[-4:] == '.pdf' else fileName
-
 # Function to get the number of pages in a PDF file
 def get_num_pages(pdf):
     reader = PyPDF2.PdfReader(pdf)

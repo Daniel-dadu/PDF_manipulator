@@ -9,12 +9,12 @@ class PagesDeletionDialog(QtWidgets.QDialog):
 
         self.pages_to_delete = []  # List to store selected pages for deletion
 
-        num_pages = get_num_pages(pdf_path)  # Get the number of pages in the PDF
+        self.num_pages = get_num_pages(pdf_path)  # Get the number of pages in the PDF
 
         self.page_list_widget = QtWidgets.QListWidget(self)
         self.page_list_widget.setGeometry(10, 10, 180, 150)
         self.page_list_widget.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
-        self.page_list_widget.addItems([str(i + 1) for i in range(num_pages)])  # Display page numbers
+        self.page_list_widget.addItems([str(i + 1) for i in range(self.num_pages)])  # Display page numbers
 
         self.delete_button = QtWidgets.QPushButton("Delete", self)
         self.delete_button.setEnabled(False)  # Initially disable the button
@@ -31,8 +31,9 @@ class PagesDeletionDialog(QtWidgets.QDialog):
         self.setLayout(layout)
 
     def updateDeleteButtonState(self):
+        count_selected_pages = len(self.page_list_widget.selectedItems())
         # Enable the "Delete" button if at least one page is selected, disable it otherwise
-        self.delete_button.setEnabled(len(self.page_list_widget.selectedItems()) > 0)
+        self.delete_button.setEnabled(0 < count_selected_pages < self.num_pages)
 
     def deletePages(self):
         for item in self.page_list_widget.selectedItems():
