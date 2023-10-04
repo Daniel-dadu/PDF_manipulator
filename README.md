@@ -46,3 +46,7 @@ Enhance the application to enable users to insert images as new pages into PDF d
 ### Password and Encryption Protection
 
 Add features for setting passwords and encrypting PDF documents to enhance security and restrict access to sensitive information.
+
+### Improved PDF viewer
+
+Upgrade the PDF viewer to deliver a more reliable and seamless experience, addressing the existing bugs for smoother document navigation and readability.
