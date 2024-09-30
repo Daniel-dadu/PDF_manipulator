@@ -4,7 +4,7 @@ PDF Manipulator is a Python application that allows users to manipulate PDF file
 
 ## Acknowledgments
 
-This project was primarily developed with the assistance of GitHub Copilot and ChatGPT (GPT-3). Their invaluable contributions in generating code, suggesting improvements, and providing guidance throughout the development process greatly facilitated the creation of this PDF manipulation application.
+This project was primarily developed with the assistance of GitHub Copilot and ChatGPT (GPT-3). The contributions of these technologies in generating code, suggesting improvements, and providing guidance throughout the development process greatly facilitated the creation of this PDF manipulation application.
 
 
 ## Dependencies
@@ -37,7 +37,7 @@ While the current version of the PDF Manipulator provides essential PDF editing 
 
 ### Undo and Redo Functionality
 
-We plan to implement an "Undo" and "Redo" feature, allowing users to revert their actions and step forward through their editing history.
+Implement an "Undo" and "Redo" feature, allowing users to revert their actions and step forward through their editing history.
 
 ### Insert Images as New Pages
 
